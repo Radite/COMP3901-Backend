@@ -1,37 +1,32 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const middleware = require('./middleware/middleware');
 const userRoutes = require('./routes/userRoutes');
-const trainerRoutes = require('./routes/trainerRoutes');
-const trainingSessionRoutes = require('./routes/trainingSessionRoutes');
 const checkinRoutes = require('./routes/checkinRoutes');
-const workoutRoutes = require('./routes/workoutRoutes');
-const exerciseLibraryRoutes = require('./routes/exerciseLibraryRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
+const visitorLogRoutes = require('./routes/visitorLogRoutes');
 
 const app = express();
 
-// Middleware setup
-app.use(express.json());
-
 // Connect to MongoDB
-mongoose.connect('mongodb://0.0.0.0:27017/testdb', {
+mongoose.connect('mongodb://0.0.0.0:27017/GymManagement', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error('MongoDB connection error:', err));
 
-// Routes setup
-app.use('/api/users', userRoutes);
-app.use('/api/trainers', trainerRoutes);
-app.use('/api/trainingsessions', trainingSessionRoutes);
-app.use('/api/checkins', checkinRoutes);
-app.use('/api/workouts', workoutRoutes);
-app.use('/api/exerciseLibrary', exerciseLibraryRoutes);
+// Apply middleware
+app.use(express.json()); // Parse JSON request bodies
+app.use(middleware.logRequest); // Log request details
+app.use('/api/users', userRoutes); // Apply user routes
+app.use('/api/checkins', checkinRoutes); // Apply checkin routes
+app.use('/api/notifications', notificationRoutes); // Apply notification routes
+app.use('/api/visitorlogs', visitorLogRoutes); // Apply visitor log routes
+app.use(middleware.handleError); // Error handling middleware
 
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-module.exports = app; // Export for testing purposes
