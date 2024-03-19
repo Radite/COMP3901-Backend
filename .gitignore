@@ -1,0 +1,34 @@
+# Node Modules
+node_modules/
+
+# Build files
+/build/
+/dist/
+/public/assets/
+/public/build/
+
+# Environment variables
+.env
+
+# IDE files
+.idea/
+.vscode/
+
+# Log files
+*.log
+
+# macOS files
+.DS_Store
+
+# Editor backup files
+*~
+
+# Cache and lock files
+yarn.lock
+package-lock.json
+
+# Test coverage directory
+coverage/
+
+# Dependency directories
+.jest/

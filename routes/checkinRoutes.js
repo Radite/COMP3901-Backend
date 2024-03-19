@@ -4,6 +4,7 @@ const CheckinController = require('../controllers/checkinController');
 
 // Routes for check-ins
 router.get('/', CheckinController.getAllCheckins);
+router.get('/count', CheckinController.getCheckinCount);
 router.get('/:id', CheckinController.getCheckinById);
 router.post('/', CheckinController.createCheckin);
 router.put('/:id', CheckinController.updateCheckin);

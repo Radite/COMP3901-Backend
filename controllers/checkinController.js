@@ -72,3 +72,28 @@ exports.deleteCheckin = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
+// Controller function to get the count of check-ins
+exports.getCheckinCount = async (req, res) => {
+    try {
+      const count = await Checkin.countDocuments();
+      res.json({ count });
+    } catch (error) {
+      console.error('Error fetching check-in count:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+
+  exports.getUpcomingCheckouts = async (req, res) => {
+    try {
+      const currentTime = new Date();
+      const upcomingCheckouts = await Checkin.find({ expiration_time: { $gt: currentTime } })
+        .populate('user_id', 'name idNumber') // Populate user information
+        .exec();
+  
+      res.json(upcomingCheckouts);
+    } catch (error) {
+      console.error('Error fetching upcoming checkouts:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
